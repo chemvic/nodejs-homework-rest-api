@@ -15,7 +15,7 @@ router.post('/', validateBody(schemas.addSchema), ctrl.addContact);
 
 router.put('/:id', isValidId, validateBody(schemas.addSchema), ctrl.updateContact);
 
-router.patch('/:id/favorite', isValidId, validateBody(schemas.updateFavoriteSchema), ctrl.updateFavoriteStatus);
+router.patch('/:id/favorite', isValidId, validateBody(schemas.updateFavoriteSchema), ctrl.updateStatusContact);
 
 router.delete('/:id', isValidId, ctrl.removeContact);
 
