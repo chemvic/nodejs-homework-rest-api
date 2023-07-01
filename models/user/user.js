@@ -25,10 +25,9 @@ const userSchema = new Schema({
 
 userSchema.post('save', handleMongooseError);
 
+
+
+module.exports = model("user", userSchema);
+
 // const User = model('user', userSchema);
-
-module.exports = model("users", userSchema);
-
-// module.exports = {
-//     User,
-// }
+// module.exports = User;
