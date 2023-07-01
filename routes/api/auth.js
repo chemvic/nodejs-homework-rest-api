@@ -2,8 +2,8 @@ const express = require('express');
 
 const router = express.Router();
 const ctrl = require('../../controllers/users');
-const {validateBody, isValidId} = require('../../middlewares');
-const {schemas}= require('../../models/user');
+const {validateBody} = require('../../middlewares');
+const schemas= require('../../models/user/userJoiSchemas');
 
 
 router.post('/register',validateBody(schemas.registerSchema), ctrl.register);
