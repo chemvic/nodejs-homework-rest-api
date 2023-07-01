@@ -11,13 +11,11 @@ console.log(token);
 if(bearer!=="Bearer"){
     next(HttpError(401));
 };
-try {
-    console.log("до візова jwt.verify");
-    const {id} =jwt.verify(token, SECRET_KEY);
-  console.log("после візова jwt.verify");
+try {  
+    const {id} =jwt.verify(token, SECRET_KEY);  
     const user = await User.findById(id);
-    console.log(`user.id ${user.id}`);
-    if(!user){
+    
+    if(!user || !user.token || user.token !== token){
         next(HttpError(401));
     };
     req.user = user;

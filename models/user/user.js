@@ -20,6 +20,11 @@ const userSchema = new Schema({
         type: String,
         required:true,
         minLength:6,
+    },
+    // сохранение token чтобы произвести logout
+    token:{
+        type: String,
+        default:''
     }
 },{versionKey:false, timestamps:true});
 
