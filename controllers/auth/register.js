@@ -10,7 +10,10 @@ const register = async(req, res)=>{
     }
     const hashedPassword = await bcrypt.hash(password,10);
     const result = await User.create({...req.body, password: hashedPassword});
-    res.status(201).json(result);
+    res.status(201).json({"user": {
+        "email": result.email,
+        "subscription": result.subscription
+      }});
 
 }
 module.exports = { register: ctrlWrapper(register) };
