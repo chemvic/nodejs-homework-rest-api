@@ -11,7 +11,11 @@ const updateAvatar = async(req, res, next) =>{
      try {
      const image = await Jimp.read(tempUpload);
      await image
-      .resize(250, 250)
+     .autocrop()
+     .cover(
+        250,250,Jimp.HORIZONTAL_ALIGN_CENTER ||Jimp.VERTICAL_ALIGN_MIDDLE
+     )
+    //   .resize(250, 250)
       .writeAsync(tempUpload);
      } catch (error) {
         console.error(error);
