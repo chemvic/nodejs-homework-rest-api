@@ -15,7 +15,6 @@ const updateAvatar = async(req, res, next) =>{
      .cover(
         250,250,Jimp.HORIZONTAL_ALIGN_CENTER ||Jimp.VERTICAL_ALIGN_MIDDLE
      )
-    //   .resize(250, 250)
       .writeAsync(tempUpload);
      } catch (error) {
         console.error(error);
@@ -23,10 +22,22 @@ const updateAvatar = async(req, res, next) =>{
 
      const {_id} = req.user;
      const avatarName = `${_id}_${originalname}`;
-    try {       
+    try {  
+      if(tempUpload ===""){return}; 
         const resultUpload = path.join(avatarsDir, avatarName);
+        const prevAvatarURL = await User.findById(_id).select('avatarURL');
+        if(prevAvatarURL.avatarURL){
+            const prevAvatarPath = path.join(__dirname,'../../', prevAvatarURL.avatarURL);
+            console.log("resultUpload: ",resultUpload);
+            console.log("prevAvatarPath: ",prevAvatarPath);
+
+            fs.unlink(prevAvatarPath,(err)=>{
+                if(err) console.log(err);
+            });
+        }
         await fs.rename(tempUpload, resultUpload);
-        const avatarURL = path.join('public', 'avatars', avatarName); 
+        const avatarURL = path.join('public', 'avatars', avatarName);
+
         await User.findByIdAndUpdate(_id, {avatarURL});
         res.json({avatarURL});       
     } catch (error) {
