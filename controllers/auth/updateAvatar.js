@@ -25,16 +25,22 @@ const updateAvatar = async(req, res, next) =>{
     try {  
       if(tempUpload ===""){return}; 
         const resultUpload = path.join(avatarsDir, avatarName);
-        const prevAvatarURL = await User.findById(_id).select('avatarURL');
-        if(prevAvatarURL.avatarURL){
-            const prevAvatarPath = path.join(__dirname,'../../', prevAvatarURL.avatarURL);
-            console.log("resultUpload: ",resultUpload);
-            console.log("prevAvatarPath: ",prevAvatarPath);
-
-            fs.unlink(prevAvatarPath,(err)=>{
-                if(err) console.log(err);
-            });
-        }
+        const prevAvatarURL = await User.findById(_id).select('avatarURL');       
+        const prevAvatarPath = path.join(__dirname,'../../', prevAvatarURL.avatarURL);
+         
+        // удаление старой аватарки из папки public при обновлении
+            try {
+                const stats = await fs.stat(prevAvatarPath);
+                if (stats.isFile()) {
+                    await fs.unlink(prevAvatarPath);
+                }
+            } catch (err) {
+                if (err.code !== 'ENOENT') {
+                    console.log("ошибка удаления старой аватарки: ", err);
+                }
+            };           
+            
+        
         await fs.rename(tempUpload, resultUpload);
         const avatarURL = path.join('public', 'avatars', avatarName);
 
