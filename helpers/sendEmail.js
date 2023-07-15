@@ -14,13 +14,6 @@ require('dotenv').config();
 
  const transport = nodemailer.createTransport(nodemailerConfig);
 
-//  const email = {
-//     to: 'chemvic79@yahoo.com',
-//     from: 'chemvic@meta.ua',
-//     subject: 'Test email',
-//     html: '<p><strong>Test мыла</strong> с компа</p>'
-//  }
-
  const sendEmail = async (data) => {
    const email = {...data, from: 'chemvic@meta.ua'}
    try {
